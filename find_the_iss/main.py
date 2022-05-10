@@ -3,7 +3,7 @@ import json
 import geocoder
 import geopy
 from geopy.geocoders import Nominatim, get_geocoder_for_service
-from haversine import haversine, Unit
+from geopy import distance
 import math
 
 def calculate_initial_compass_bearing(pointA, pointB):
@@ -44,8 +44,6 @@ def calculate_initial_compass_bearing(pointA, pointB):
 
     return compass_bearing
 
-# print(calculate_initial_compass_bearing(my_latlon, iss_latlon))
-
 '''
 Sanity Check:
 http://dwtkns.com/pointplotter/
@@ -64,6 +62,8 @@ http://dwtkns.com/pointplotter/
 -73.4085,41.577
 '''
 
+
+
 def geocode(geocoder, config, query):
     cls = get_geocoder_for_service(geocoder)
     geolocator = cls(**config)
@@ -71,24 +71,23 @@ def geocode(geocoder, config, query):
     return location.address
 
 def main():
+    # API link
     url = 'http://api.open-notify.org/iss-now.json'
 
-    data = json.loads(requests.get(url).text)
-    '''
-    Sample Output:
-    {"timestamp": 1652139467, "iss_position": {"longitude": "150.0956", "latitude": "-29.4221"}, "message": "success"}
-    '''
-    iss_loc = data['iss_position']
-    iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
-
+    # Get user lat-lon
     g = geocoder.ip('me')
     my_latlon = g.latlng
+
+    # Get ISS lat-lon
+    iss_data = json.loads(requests.get(url).text)
+    iss_loc = iss_data['iss_position']
+    iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
 
     print(f'Your geolocation: {my_latlon}, ISS geolocation: {iss_latlon}')
 
     print(f'Bearing in degrees: {calculate_initial_compass_bearing(my_latlon, iss_latlon)}')
 
-    print(f'Distance in miles: {haversine(my_latlon, iss_latlon, unit=Unit.MILES)}')
+    print(f'Distance in miles: {distance.distance(my_latlon, iss_latlon).miles}')
 
     locator = Nominatim(user_agent='find_the_iss')
     location = locator.geocode('Champ de Mars, Paris, France')
