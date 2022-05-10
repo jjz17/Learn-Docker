@@ -18,3 +18,4 @@ Credit for bearing function: https://gist.github.com/jeromer/2005586
 
 ### Ideas
 Add feature to calculate time to travel the distance by walking/running/other modes of transport
+Use Google maps api for this?

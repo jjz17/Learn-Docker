@@ -1,6 +1,8 @@
 import requests
 import json
 import geocoder
+import geopy
+from geopy.geocoders import Nominatim, get_geocoder_for_service
 from haversine import haversine, Unit
 import math
 
@@ -62,6 +64,12 @@ http://dwtkns.com/pointplotter/
 -73.4085,41.577
 '''
 
+def geocode(geocoder, config, query):
+    cls = get_geocoder_for_service(geocoder)
+    geolocator = cls(**config)
+    location = geolocator.geocode(query)
+    return location.address
+
 def main():
     url = 'http://api.open-notify.org/iss-now.json'
 
@@ -81,6 +89,10 @@ def main():
     print(f'Bearing in degrees: {calculate_initial_compass_bearing(my_latlon, iss_latlon)}')
 
     print(f'Distance in miles: {haversine(my_latlon, iss_latlon, unit=Unit.MILES)}')
+
+    locator = Nominatim(user_agent='find_the_iss')
+    location = locator.geocode('Champ de Mars, Paris, France')
+    print(location)
 
 if __name__ == '__main__':
     main()
