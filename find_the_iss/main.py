@@ -92,6 +92,9 @@ def main():
     locator = Nominatim(user_agent='find_the_iss')
     location = locator.geocode('Champ de Mars, Paris, France')
     print(location)
+    print(locator.reverse(my_latlon))
+    print(locator.reverse(iss_latlon))
+
 
 if __name__ == '__main__':
     main()
