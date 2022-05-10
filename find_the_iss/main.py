@@ -1,29 +1,8 @@
 import requests
 import json
 import geocoder
-import haversine as hs
+from haversine import haversine, Unit
 import math
-
-url = 'http://api.open-notify.org/iss-now.json'
-
-data = json.loads(requests.get(url).text)
-'''
-Sample Output:
-{"timestamp": 1652139467, "iss_position": {"longitude": "150.0956", "latitude": "-29.4221"}, "message": "success"}
-'''
-
-print(type(data))
-
-g = geocoder.ip('me')
-# print(g.latlng)
-my_latlon = g.latlng
-
-iss_loc = data['iss_position']
-iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
-# my_loc = {'longitude': my_latlon[1], 'latitude': my_latlon[0]}
-print(iss_latlon, my_latlon)
-
-
 
 def calculate_initial_compass_bearing(pointA, pointB):
     """
@@ -63,7 +42,7 @@ def calculate_initial_compass_bearing(pointA, pointB):
 
     return compass_bearing
 
-print(calculate_initial_compass_bearing(my_latlon, iss_latlon))
+# print(calculate_initial_compass_bearing(my_latlon, iss_latlon))
 
 '''
 Sanity Check:
@@ -82,3 +61,26 @@ http://dwtkns.com/pointplotter/
 -75.7349,39.4708
 -73.4085,41.577
 '''
+
+def main():
+    url = 'http://api.open-notify.org/iss-now.json'
+
+    data = json.loads(requests.get(url).text)
+    '''
+    Sample Output:
+    {"timestamp": 1652139467, "iss_position": {"longitude": "150.0956", "latitude": "-29.4221"}, "message": "success"}
+    '''
+    iss_loc = data['iss_position']
+    iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
+
+    g = geocoder.ip('me')
+    my_latlon = g.latlng
+
+    print(f'Your geolocation: {my_latlon}, ISS geolocation: {iss_latlon}')
+
+    print(f'Bearing in degrees: {calculate_initial_compass_bearing(my_latlon, iss_latlon)}')
+
+    print(f'Distance in miles: {haversine(my_latlon, iss_latlon, unit=Unit.MILES)}')
+
+if __name__ == '__main__':
+    main()
