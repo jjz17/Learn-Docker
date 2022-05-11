@@ -9,7 +9,10 @@ redis = Redis(host='redis', db=0, socket_timeout=5, charset='utf-8', decode_resp
 def index():
     if request.method == 'POST':
         name = request.json['name']
-        redis.rpush('students', {'name': name})
+        # redis.rpush('students', {'name': name})
+        # print(type(name))
+        # print(name)
+        redis.rpush('students', name)
         return jsonify({'name': name})
 
     if request.method == 'GET':
