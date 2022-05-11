@@ -23,4 +23,5 @@ Credit for bearing function: https://gist.github.com/jeromer/2005586
 
 ### Ideas
 Add feature to calculate time to travel the distance by walking/running/other modes of transport
-Use Google maps api for this?
+Find free Google Maps API alternative?
+Draw a world map with user and iss locations rendered with icons?
