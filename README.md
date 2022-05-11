@@ -25,3 +25,19 @@ Credit for bearing function: https://gist.github.com/jeromer/2005586
 Add feature to calculate time to travel the distance by walking/running/other modes of transport
 Find free Google Maps API alternative?
 Draw a world map with user and iss locations rendered with icons?
+
+## flask_redis
+
+### Tutorial
+https://takacsmark.com/docker-compose-tutorial-beginners-by-example-basics/#preparing-the-example
+
+### Terminal Instructions
+    docker-compose up
+
+#### To run
+    curl --header "Content-Type: application/json" \
+    --request POST \
+    --data '{"name":"Jason"}' \
+    localhost:5001  
+
+    curl localhost:5001
