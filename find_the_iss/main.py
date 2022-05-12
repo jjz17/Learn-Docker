@@ -78,22 +78,28 @@ def main():
     g = geocoder.ip('me')
     my_latlon = g.latlng
 
-    # Get ISS lat-lon
-    iss_data = json.loads(requests.get(url).text)
-    iss_loc = iss_data['iss_position']
-    iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
+    while(True):
 
-    print(f'Your geolocation: {my_latlon}, ISS geolocation: {iss_latlon}')
+      # Get ISS lat-lon
+      iss_data = json.loads(requests.get(url).text)
+      iss_loc = iss_data['iss_position']
+      iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
 
-    print(f'Bearing in degrees: {calculate_initial_compass_bearing(my_latlon, iss_latlon)}')
+      print(f'Your geolocation: {my_latlon}, ISS geolocation: {iss_latlon}')
 
-    print(f'Distance in miles: {distance.distance(my_latlon, iss_latlon).miles}')
+      print(f'Bearing in degrees: {calculate_initial_compass_bearing(my_latlon, iss_latlon)}')
 
-    locator = Nominatim(user_agent='find_the_iss')
-    location = locator.geocode('Champ de Mars, Paris, France')
-    print(location)
-    print(locator.reverse(my_latlon))
-    print(locator.reverse(iss_latlon))
+      print(f'Distance in miles: {distance.distance(my_latlon, iss_latlon).miles}')
+
+      locator = Nominatim(user_agent='find_the_iss')
+      location = locator.geocode('Champ de Mars, Paris, France')
+      print(location)
+      print(locator.reverse(my_latlon))
+      print(locator.reverse(iss_latlon))
+    
+      user_input = input('Do you want to find the ISS again (y/[n])? ')
+      if user_input != 'y':
+          break
 
 
 if __name__ == '__main__':
