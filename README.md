@@ -26,6 +26,8 @@ Add feature to calculate time to travel the distance by walking/running/other mo
 Find free Google Maps API alternative?
 Draw a world map with user and iss locations rendered with icons?
 
+Use folium to create interactive map
+
 ## flask_redis
 
 ### Tutorial
