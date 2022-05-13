@@ -95,7 +95,11 @@ def main():
       print(locator.reverse(my_latlon))
       print(locator.reverse(iss_latlon))
 
-      map = folium.Map()
+      # map = folium.Map()
+      map = folium.Map(location=my_latlon, zoom_start=12)
+      folium.Marker(my_latlon).add_to(map)
+      # for point in range(0, len(locationlist)):
+        # folium.Marker(locationlist[point], popup=df_counters['Name'][point]).add_to(map)
       show_map(map)
     
       user_input = input('Do you want to find the ISS again (y/[n])? ')
