@@ -33,6 +33,9 @@ Use folium to create interactive map
 ### Tutorial
 https://takacsmark.com/docker-compose-tutorial-beginners-by-example-basics/#preparing-the-example
 
+#### Pytest Tutorial
+https://drive.google.com/file/d/1l2wvDEYATKBqPM2kRG4debCTnxz29D42/view
+
 ### Terminal Instructions
     docker-compose up
 
