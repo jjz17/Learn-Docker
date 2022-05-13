@@ -1,10 +1,12 @@
 import requests
 import json
+import folium
 import geocoder
 import geopy
 from geopy.geocoders import Nominatim, get_geocoder_for_service
 from geopy import distance
 import math
+import webbrowser
 
 def calculate_initial_compass_bearing(pointA, pointB):
     """
@@ -62,13 +64,9 @@ http://dwtkns.com/pointplotter/
 -73.4085,41.577
 '''
 
-
-
-def geocode(geocoder, config, query):
-    cls = get_geocoder_for_service(geocoder)
-    geolocator = cls(**config)
-    location = geolocator.geocode(query)
-    return location.address
+def show_map(map):
+  map.save('map.html')
+  webbrowser.open('map.html', new=2)
 
 def main():
     # API link
@@ -96,6 +94,9 @@ def main():
       print(location)
       print(locator.reverse(my_latlon))
       print(locator.reverse(iss_latlon))
+
+      map = folium.Map()
+      show_map(map)
     
       user_input = input('Do you want to find the ISS again (y/[n])? ')
       if user_input != 'y':
