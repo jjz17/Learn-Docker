@@ -7,6 +7,7 @@ from geopy.geocoders import Nominatim, get_geocoder_for_service
 from geopy import distance
 import math
 import webbrowser
+import os
 
 def calculate_initial_compass_bearing(pointA, pointB):
     """
@@ -96,8 +97,9 @@ def main():
       print(locator.reverse(iss_latlon))
 
       # map = folium.Map()
-      map = folium.Map(location=my_latlon, zoom_start=12)
-      folium.Marker(my_latlon).add_to(map)
+      map = folium.Map(location=my_latlon, zoom_start=2)
+      folium.Marker(my_latlon, popup='You', icon=folium.Icon(color='green', icon='ok-sign')).add_to(map)
+      folium.Marker(iss_latlon, popup='ISS').add_to(map)
       # for point in range(0, len(locationlist)):
         # folium.Marker(locationlist[point], popup=df_counters['Name'][point]).add_to(map)
       show_map(map)
@@ -106,6 +108,9 @@ def main():
       if user_input != 'y':
           break
 
+    show_map(map)
+    webbrowser.open_new_tab('file://' + os.path.realpath('map.html'))
+
 
 if __name__ == '__main__':
-    main()
+  main()
