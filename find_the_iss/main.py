@@ -8,6 +8,7 @@ from geopy import distance
 import math
 import webbrowser
 import os
+import time
 
 def calculate_initial_compass_bearing(pointA, pointB):
     """
@@ -66,8 +67,9 @@ http://dwtkns.com/pointplotter/
 '''
 
 def show_map(map):
-  map.save('map.html')
-  webbrowser.open('map.html', new=2)
+  file_name = 'map.html'
+  map.save(file_name)
+  webbrowser.open_new_tab('file://' + os.path.realpath(file_name))
 
 def main():
     # API link
@@ -79,27 +81,38 @@ def main():
 
     while(True):
 
+      tracking_iters = int(input('How many readings do you want to take?'))
+      data = [] 
+      for _ in range(tracking_iters):
+        iss_data = json.loads(requests.get(url).text)
+        iss_loc = iss_data['iss_position']
+        iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
+        data.append(iss_latlon)
+        print('running...')
+        time.sleep(1)
+
       # Get ISS lat-lon
-      iss_data = json.loads(requests.get(url).text)
-      iss_loc = iss_data['iss_position']
-      iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
+      # iss_data = json.loads(requests.get(url).text)
+      # iss_loc = iss_data['iss_position']
+      # iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
 
-      print(f'Your geolocation: {my_latlon}, ISS geolocation: {iss_latlon}')
+      # print(f'Your geolocation: {my_latlon}, ISS geolocation: {iss_latlon}')
 
-      print(f'Bearing in degrees: {calculate_initial_compass_bearing(my_latlon, iss_latlon)}')
+      # print(f'Bearing in degrees: {calculate_initial_compass_bearing(my_latlon, iss_latlon)}')
 
-      print(f'Distance in miles: {distance.distance(my_latlon, iss_latlon).miles}')
+      # print(f'Distance in miles: {distance.distance(my_latlon, iss_latlon).miles}')
 
-      locator = Nominatim(user_agent='find_the_iss')
-      location = locator.geocode('Champ de Mars, Paris, France')
-      print(location)
-      print(locator.reverse(my_latlon))
-      print(locator.reverse(iss_latlon))
+      # locator = Nominatim(user_agent='find_the_iss')
+      # location = locator.geocode('Champ de Mars, Paris, France')
+      # print(location)
+      # print(locator.reverse(my_latlon))
+      # print(locator.reverse(iss_latlon))
 
       # map = folium.Map()
       map = folium.Map(location=my_latlon, zoom_start=2)
       folium.Marker(my_latlon, popup='You', icon=folium.Icon(color='green', icon='ok-sign')).add_to(map)
-      folium.Marker(iss_latlon, popup='ISS').add_to(map)
+      for point in data:
+        folium.Marker(point, popup='ISS').add_to(map)    
       # for point in range(0, len(locationlist)):
         # folium.Marker(locationlist[point], popup=df_counters['Name'][point]).add_to(map)
       show_map(map)
@@ -107,9 +120,6 @@ def main():
       user_input = input('Do you want to find the ISS again (y/[n])? ')
       if user_input != 'y':
           break
-
-    show_map(map)
-    webbrowser.open_new_tab('file://' + os.path.realpath('map.html'))
 
 
 if __name__ == '__main__':
