@@ -112,6 +112,9 @@ def main():
       file = open('json_data.json')
       data = json.load(file)
 
+      latlon = data.values()
+      points = [[point['lat'], point['lon']] for point in latlon]
+
       # map = folium.Map()
       map = folium.Map(location=my_latlon, zoom_start=2)
       folium.Marker(my_latlon, popup='You', icon=folium.Icon(color='green', icon='ok-sign')).add_to(map)
@@ -119,6 +122,7 @@ def main():
         folium.Marker([location['lat'], location['lon']], popup=f'ISS: {datetime.fromtimestamp(int(time))}').add_to(map)    
       # for point in range(0, len(locationlist)):
         # folium.Marker(locationlist[point], popup=df_counters['Name'][point]).add_to(map)
+      folium.PolyLine(points, color='red').add_to(map)
       show_map(map)
     
       user_input = input('Do you want to find the ISS again (y/[n])? ')
