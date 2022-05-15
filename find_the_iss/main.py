@@ -9,6 +9,7 @@ import math
 import webbrowser
 import os
 import time
+from datetime import datetime
 
 def calculate_initial_compass_bearing(pointA, pointB):
     """
@@ -81,15 +82,15 @@ def main():
 
     while(True):
 
-      tracking_iters = int(input('How many readings do you want to take?'))
-      data = [] 
-      for _ in range(tracking_iters):
-        iss_data = json.loads(requests.get(url).text)
-        iss_loc = iss_data['iss_position']
-        iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
-        data.append(iss_latlon)
-        print('running...')
-        time.sleep(1)
+      # tracking_iters = int(input('How many readings do you want to take?'))
+      # data = [] 
+      # for _ in range(tracking_iters):
+      #   iss_data = json.loads(requests.get(url).text)
+      #   iss_loc = iss_data['iss_position']
+      #   iss_latlon = [float(iss_loc['latitude']), float(iss_loc['longitude'])]
+      #   data.append(iss_latlon)
+      #   print('running...')
+      #   time.sleep(1)
 
       # Get ISS lat-lon
       # iss_data = json.loads(requests.get(url).text)
@@ -108,11 +109,14 @@ def main():
       # print(locator.reverse(my_latlon))
       # print(locator.reverse(iss_latlon))
 
+      file = open('json_data.json')
+      data = json.load(file)
+
       # map = folium.Map()
       map = folium.Map(location=my_latlon, zoom_start=2)
       folium.Marker(my_latlon, popup='You', icon=folium.Icon(color='green', icon='ok-sign')).add_to(map)
-      for point in data:
-        folium.Marker(point, popup='ISS').add_to(map)    
+      for time, location in data.items():
+        folium.Marker([location['lat'], location['lon']], popup=f'ISS: {datetime.fromtimestamp(int(time))}').add_to(map)    
       # for point in range(0, len(locationlist)):
         # folium.Marker(locationlist[point], popup=df_counters['Name'][point]).add_to(map)
       show_map(map)

@@ -17,8 +17,9 @@ for _ in range(5):
     iss_latlon = {'lat': float(iss_loc['latitude']), 'lon': float(iss_loc['longitude'])}
     new_data[int(time.time())] = (iss_latlon)
     print('running...')
-    time.sleep(1)
+    time.sleep(5)
 
+# Append new data to existing data
 data.update(new_data)
 print(data)
 # json_string = json.dumps(data)
