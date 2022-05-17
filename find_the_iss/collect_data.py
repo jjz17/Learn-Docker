@@ -11,7 +11,7 @@ data = json.load(file)
 url = 'http://api.open-notify.org/iss-now.json'
 new_data = {}
 
-for _ in range(50):
+for _ in range(1):
     iss_data = json.loads(requests.get(url).text)
     iss_loc = iss_data['iss_position']
     iss_latlon = {'lat': float(iss_loc['latitude']), 'lon': float(iss_loc['longitude'])}
@@ -26,3 +26,5 @@ data.update(new_data)
 
 with open('json_data.json', 'w') as outfile:
     json.dump(data, outfile)
+
+print('working')
