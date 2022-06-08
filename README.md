@@ -2,5 +2,5 @@
 A collection of projects for learning purposes.
 
 ## Technologies Explored:
-Docker
+Docker \
 Python Dataclasses
